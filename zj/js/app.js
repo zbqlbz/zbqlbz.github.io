@@ -185,55 +185,10 @@ function dealCurrentNav() {
 function renderFooter() {
 	var footerHtml = '<p>系统仅为个人学习测试使用，请在下载后24小时内删除，不得用于任何商业用途，否则后果自负，请支持购买微软正版软件！</p>' +
         '<p>如侵犯到您的权益,请及时通知我们,我们会及时处理。</p>'+
-		'<p>版权:包头市兵工精细化学有限公司</p>' +
+		'<p>版权归ZJ工作室所有</p>' +
 		'<p><a href="about.html" target="_blank">关于我们</a> -  <a href="linkus.html" target="_blank">联系我们</a> -  <a href="statement.html" target="_blank">使用条款</a></p>';
 
 	$('#pageFooter').html(footerHtml);
 }
 
-/**
- * 解析查询字符串
- */
-function getQueryArgs() {
-	//取得查询字符串并去掉？
-	var qs = location.search.length > 0 ? location.search.substring(1) : '',
 
-		//保存数据
-		args = {},
-
-		//取得每一项
-		items = qs.length ? qs.split('&') : [],
-		item = null,
-		name = null,
-		value = null,
-		i = 0,
-		len = items.length;
-
-	//将每一项添加到args
-	for(i = 0; i < len; i++) {
-		item = items[i].split('=');
-		name = decodeURIComponent(item[0]);
-		value = decodeURIComponent(item[1]);
-		if(name.length) {
-			args[name] = value;
-		}
-	}
-	return args;
-}
-
-/**
- * 获取前一天: 20xx-xx-xx
- */
-function getFrontDate() {
-	var date = new Date(new Date() - 24 * 60 * 60 * 1000);
-
-	return date.toJSON().split('T')[0];
-}
-
-/** ====================================
- *	添加统计代码
- *  ====================================
- */
-
-var COUNT_ACRIPT = '<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id=\'cnzz_stat_icon_1262545875\'%3E%3C/span%3E%3Cscript src=\'" + cnzz_protocol + "s13.cnzz.com/z_stat.php%3Fid%3D1262545875%26show%3Dpic\' type=\'text/javascript\'%3E%3C/script%3E"));</script>';
-$('body').append(COUNT_ACRIPT);
