@@ -1,0 +1,163 @@
+$(document).ready(function(){
+
+	var domain = window.location.href;
+  //下面是关键词统计
+  var str1="";
+  var str2= "";
+  var refer=document.referrer;
+  var sosuo=refer.split(".")[1];
+  var grep=null;
+  var str=null;
+  var keyword=null;
+  var skey="xx";
+  var ykey="";
+ //alert(refer);
+  switch(sosuo){
+    case "baidu":
+      grep=/word\=.*\&/i;
+      str=refer.match(grep) ;
+      keyword=str.toString().split('&')[0].split('=')[1];
+      ykey=decodeURIComponent(keyword);
+      var qudao = '1';
+      addCookie('qudao','1');
+      mtype = 1;
+      addCookie('key',decodeURIComponent(ykey));
+      addCookie('mtype',mtype);
+      //alert(getCookie(key));
+    break;
+    case "sogou":
+      grep=/query\=.*\&/i;
+      str=refer.match(grep);
+      keyword=str.toString().split("=")[1];
+      ykey=decodeURIComponent(keyword.split('&')[0]);
+
+      addCookie('qudao','3');
+      addCookie('key',decodeURIComponent(ykey));
+	  ykey = ykey.replace(/\+/g,' ');
+      mtype = 3;
+      addCookie('mtype',mtype);
+      //alert(getCookie('key'));
+    break;
+    case "so":
+        grep=/q\=.*/i;
+        str=refer.match(grep);
+        //alert(str);
+        keyword = str.toString().split("=")[1];
+        keyword = keyword.toString().split('&')[0];
+        //keyword = keyword.split('+')[0];
+        ykey = decodeURIComponent(keyword);
+		ykey = ykey.replace(/\+/g,' ');
+
+        //alert(ykey);
+        mtype = 2;
+
+        addCookie('qudao','2');
+        addCookie('key',decodeURIComponent(ykey));
+        addCookie('mtype',mtype);
+      break;
+      default:
+      ykey = '';
+  }
+  var host = window.location.host;
+var mtype = getCookie('mtype');
+
+var ykey = getCookie('key');
+
+  $.ajax({
+  	url:'http://tj.boshixitong.com/index_admin.php/Home/tongji/keyword',
+  	type:'GET',
+  	dataType:'jsonp',
+  	data:{'keyword':ykey,'host':host,'mtype':mtype},
+  	jsonp:'callback',
+  	jsonpCallback:'getName',
+
+     });
+  function addCookie(name,value){
+      var cookieString = name+"="+value;
+      document.cookie=cookieString;
+  }
+  function getCookie(name){
+      var strCookie=document.cookie;
+
+      var arrCookie=strCookie.split("; ");
+      for(var i=0;i < arrCookie.length;i++){
+      var arr=arrCookie[i].split("=");
+      if(arr[0]==name)return arr[1];
+      }
+      return "";
+  }
+  $.ajax({
+		url:'http://tj.boshixitong.com/index_admin.php/Home/tongji/test',
+		type:'GET',
+		dataType:'jsonp',
+		data:{'domain':domain,'qudao':mtype},
+		jsonp:'callback',
+		jsonpCallback:'getName',
+
+	});
+
+  //下载统计
+  $('.ddd').click(function(){
+  	var hrf = $(this).attr('href');
+  	var host = window.location.host;
+  	var domain = window.location.href;
+	var keyword = getCookie('key');
+	var mtype   = getCookie('mtype');
+  	$.ajax({
+		url:'http://tj.boshixitong.com/index_admin.php/Home/tongji/xztj',
+		type:'GET',
+		dataType:'jsonp',
+		data:{'domain':domain,'url':hrf,'host':host,'qudao':mtype,'keyword':keyword},
+		jsonp:'callback',
+		jsonpCallback:'getName',
+
+	   });
+  });
+
+
+  //迅雷
+  	$('.dxunlei').click(function(){
+  		var host = window.location.host;
+  		var domain = window.location.href;
+
+  		$.ajax({
+  			url:'http://tj.boshixitong.com/index_admin.php/Home/tongji/dxunlei',
+  			type:'GET',
+  			dataType:'jsonp',
+  			data:{'domain':domain,'shost':host},
+  			jsonp:'callback',
+  			jsonpCallback:'getName',
+
+  		   });
+  	});
+  	$('.dbaidu').click(function(){
+  		    var domain = window.location.href;
+  			var host = window.location.host;
+  		  	$.ajax({
+  				url:'http://tj.boshixitong.com/index_admin.php/Home/tongji/dbaidu',
+  				type:'GET',
+  				dataType:'jsonp',
+  				data:{'domain':domain,'shost':host},
+  				jsonp:'callback',
+  				jsonpCallback:'getName',
+
+  			   });
+  		  });
+  	//本地
+  	$('.dbendi').click(function(){
+  		    var domain = window.location.href;
+  			var host = window.location.host;
+  		  	$.ajax({
+  				url:'http://tj.boshixitong.com/index_admin.php/Home/tongji/dbendi',
+  				type:'GET',
+  				dataType:'jsonp',
+  				data:{'domain':domain,'shost':host},
+  				jsonp:'callback',
+  				jsonpCallback:'getName',
+
+  			   });
+  		  });
+});
+
+
+
